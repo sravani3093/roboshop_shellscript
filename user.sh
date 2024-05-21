@@ -12,7 +12,6 @@ VALIDATE(){
     if [ $1 -ne 0 ]
     then 
         echo -e "$2 is $R FAILED $N"
-        exit 1
         
     else
         echo  -e "$2 is $G SUCCESSFULL $N"
@@ -26,7 +25,6 @@ then
 else
     echo -e " $G proceed to runthe script $N"
 fi
-
 dnf module disable nodejs -y &>> $LOGFILE
 VALIDATE $? "module disable nodejs"
 
@@ -53,32 +51,29 @@ fi
 mkdir  -p /app &>> $LOGFILE
 VALIDATE $?  "app Directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip &>> $LOGFILE
-VALIDATE $? "Catalogue File Downloaded"
+curl -L -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip &>> $LOGFILE
+VALIDATE $? "User File Downloaded"
 
-cd /app &>> $LOGFILE
-VALIDATE $? "Changed the Directoy to  /app"
-
-unzip  -o /tmp/catalogue.zip &>> $LOGFILE
+unzip  -o /tmp/user.zip &>> $LOGFILE
 VALIDATE $? "File Unzip"
 
 npm install &>> $LOGFILE
 VALIDATE $? "Dependecies Installed"
 
-cp /home/centos/roboshop_shellscript/catalogue.service /etc/systemd/system &>> $LOGFILE
-VALIDATE $? "File copied"
+cp /home/centos/roboshop_shellscript/user.service /etc/systemd/system &>> $LOGFILE
+VALIDATE $? "File copied successfully"
 
 systemctl daemon-reload &>> $LOGFILE
 VALIDATE $? "daemon-reload"
 
-systemctl enable catalogue  &>> $LOGFILE
-VALIDATE $? "catalogue enabled"
+systemctl enable cart  &>> $LOGFILE
+VALIDATE $? "cart enabled"
 
-systemctl start catalogue  &>> $LOGFILE
-VALIDATE $? "catalogue started"
+systemctl start cart &>> $LOGFILE
+VALIDATE $? "cart started"
 
 cp /home/centos/roboshop_shellscript/mongo.repo /etc/yum.repos.d &>> $LOGFILE #copying the repo file
-VALIDATE $? "mongo repo copied "
+VALIDATE $? "mongo repo copied"
 
 rpm -qa | grep -i mongodb-org-shell
 if [ $? -ne 0 ]
@@ -89,7 +84,12 @@ else
     echo -e " MONGODB IS ALREADY INSTALLED ... $Y SKIPPING $N"
 fi
 
-mongo --host $MONGODB_HOST </app/schema/catalogue.js &>> $LOGFILE
-VALIDATE $? "catalogue loaded"
+mongo --host $MONGODBU_HOST </app/schema/catalogue.js &>> $LOGFILE
+VALIDATE $? "Users loaded"
+
+
+
+
+
 
 

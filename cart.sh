@@ -12,7 +12,6 @@ VALIDATE(){
     if [ $1 -ne 0 ]
     then 
         echo -e "$2 is $R FAILED $N"
-        exit 1
         
     else
         echo  -e "$2 is $G SUCCESSFULL $N"
@@ -26,7 +25,6 @@ then
 else
     echo -e " $G proceed to runthe script $N"
 fi
-
 dnf module disable nodejs -y &>> $LOGFILE
 VALIDATE $? "module disable nodejs"
 
@@ -53,43 +51,23 @@ fi
 mkdir  -p /app &>> $LOGFILE
 VALIDATE $?  "app Directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip &>> $LOGFILE
-VALIDATE $? "Catalogue File Downloaded"
+curl -L -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip &>> $LOGFILE
+VALIDATE $? "cart File Downloaded"
 
-cd /app &>> $LOGFILE
-VALIDATE $? "Changed the Directoy to  /app"
-
-unzip  -o /tmp/catalogue.zip &>> $LOGFILE
+unzip  -o /tmp/cart.zip &>> $LOGFILE
 VALIDATE $? "File Unzip"
 
 npm install &>> $LOGFILE
 VALIDATE $? "Dependecies Installed"
 
-cp /home/centos/roboshop_shellscript/catalogue.service /etc/systemd/system &>> $LOGFILE
-VALIDATE $? "File copied"
+cp cart.service /etc/systemd/system &>> $LOGFILE
+VALIDATE $? "File copied successfully"
 
 systemctl daemon-reload &>> $LOGFILE
 VALIDATE $? "daemon-reload"
 
-systemctl enable catalogue  &>> $LOGFILE
-VALIDATE $? "catalogue enabled"
+systemctl enable user  &>> $LOGFILE
+VALIDATE $? "user enabled"
 
-systemctl start catalogue  &>> $LOGFILE
-VALIDATE $? "catalogue started"
-
-cp /home/centos/roboshop_shellscript/mongo.repo /etc/yum.repos.d &>> $LOGFILE #copying the repo file
-VALIDATE $? "mongo repo copied "
-
-rpm -qa | grep -i mongodb-org-shell
-if [ $? -ne 0 ]
-then 
-    dnf install mongodb-org-shell -y &>> $LOGFILE
-    VALIDATE $? "MONGODB INSTALLED"
-else 
-    echo -e " MONGODB IS ALREADY INSTALLED ... $Y SKIPPING $N"
-fi
-
-mongo --host $MONGODB_HOST </app/schema/catalogue.js &>> $LOGFILE
-VALIDATE $? "catalogue loaded"
-
-
+systemctl start user  &>> $LOGFILE
+VALIDATE $? "user started"

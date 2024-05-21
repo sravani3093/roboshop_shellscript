@@ -25,7 +25,7 @@ else
     echo -e " $G proceed to runthe script $N"
 fi
 
-cp mongo.repo /etc/yum.repos.d &>>$LOGFILE #copying the repo file
+cp /home/centos/roboshop_shellscript/mongo.repo /etc/yum.repos.d &>>$LOGFILE #copying the repo file
 VALIDATE $? "Repo file copied"
 
 rpm -qa | grep -i mongodb-org &>>$LOGFILE
