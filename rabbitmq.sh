@@ -39,14 +39,6 @@ VALIDATE $? "RABBITMQ ENABLED"
 
 systemctl start rabbitmq-server &>> $LOGFILE
 VALIDATE $? "RABBITMQ STARTED"
-id roboshop
-if [ $? -ne 0 ]
-then 
-    rabbitmqctl useradd roboshop roboshop123 &>> $LOGFILE
-    VALIDATE $? "User added"
-else
-    echo "usr exist"
-fi
 
 rabbitmqctl add_user roboshop roboshop123 &>> $LOGFILE
 VALIDATE $? "creating user"
