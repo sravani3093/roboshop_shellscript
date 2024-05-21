@@ -5,10 +5,11 @@ G="\e[32m"
 N="\e[0m"
 Y="\e[33m"
 TIMESTAMP=$(date +%F-%H-%M-%S)
+chmod -R /var/log
 LOGFILE=/var/log/$0_$TIMESTAMP.log #Generating the log file
 echo "script execution started at : $TIMESTAMP " &>>$LOGFILE
 VALIDATE(){
-    if [ $1 -ne 0]
+    if [ $1 -ne 0 ]
     then 
         echo  -e "$2 is $G SUCCESSFULL $N"
     else
@@ -16,7 +17,7 @@ VALIDATE(){
     fi
 }
 
-if [ $ID -ne 0] #checking the root user
+if [ $ID -ne 0 ] #checking the root user
 then
     echo -e " $R you are not a root,please run as root user $N"
     exit 1
