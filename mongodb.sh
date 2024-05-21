@@ -25,6 +25,7 @@ else
 fi
 
 cp mongo.repo /etc/yum.repos.d &>>$LOGFILE #copying the repo file
+VALIDATE $? "Repo file copied"
 
 rpm -qa | grep -i mongodb-org &>>$LOGFILE
 if [ $? -ne 0 ]
