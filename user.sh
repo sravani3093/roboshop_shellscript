@@ -84,7 +84,7 @@ else
     echo -e " MONGODB IS ALREADY INSTALLED ... $Y SKIPPING $N"
 fi
 
-mongo --host $MONGODB_HOST </app/schema/catalogue.js &>> $LOGFILE
+mongo --host $MONGODB_HOST</app/schema/catalogue.js &>> $LOGFILE
 VALIDATE $? "Users loaded"
 
 
