@@ -28,7 +28,7 @@ fi
 dnf module disable mysql -y &>> $LOGFILE
 VALIDATE $? "MySQL Module Disabled"
 
-cp /home/centos/roboshop_shellscript/mysql.sh /etc/yum.repos.d
+cp /home/centos/roboshop_shellscript/mysql.repo /etc/yum.repos.d
 VALIDATE $? "mySql repo copied "
 
 ############
