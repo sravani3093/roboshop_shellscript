@@ -54,6 +54,9 @@ VALIDATE $?  "app Directory"
 curl -L -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip &>> $LOGFILE
 VALIDATE $? "User File Downloaded"
 
+cd /app &>> $LOGFILE
+VALIDATE $? "Changed the Directoy to  /app"
+
 unzip  -o /tmp/user.zip &>> $LOGFILE
 VALIDATE $? "File Unzip"
 

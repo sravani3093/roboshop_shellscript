@@ -25,20 +25,8 @@ then
 else
     echo -e " $G proceed to runthe script $N"
 fi
-dnf module disable nodejs -y &>> $LOGFILE
-VALIDATE $? "module disable nodejs"
-
-dnf module enable nodejs:18 -y &>> $LOGFILE
-VALIDATE $? "module enable nodejs:18"
-
-rpm -qa | grep -i nodejs
-if [ $? -ne 0 ]
-then
-   dnf install nodejs -y &>> $LOGFILE
-   VALIDATE $? "nodejs installation"
-else 
-    echo -e  "nodejs is already installed $Y SKIPPING $N"
-fi
+dnf install python36 gcc python3-devel -y &>>$LOGFILE
+VALIDATE $? "PYTHON INSTALLED"
 
 id roboshop
 if [ $? -ne 0 ]
@@ -48,29 +36,33 @@ then
 else 
     echo "USER roboshop already Exist"
 fi
+
 mkdir  -p /app &>> $LOGFILE
 VALIDATE $?  "app Directory"
 
-curl -L -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip &>> $LOGFILE
-VALIDATE $? "cart File Downloaded"
+curl -L -o /tmp/payment.zip https://roboshop-builds.s3.amazonaws.com/payment.zip &>> $LOGFILE
+VALIDATE $? "PAYMENT File Downloaded"
 
 cd /app &>> $LOGFILE
 VALIDATE $? "Changed the Directoy to  /app"
 
-unzip  -o /tmp/cart.zip &>> $LOGFILE
+unzip  -o /tmp/payment.zip &>> $LOGFILE
 VALIDATE $? "File Unzip"
 
-npm install &>> $LOGFILE
-VALIDATE $? "Dependecies Installed"
+pip3.6 install -r requirements.txt
+VALIDATE $? " pip Dependecies Installed"
 
-cp /home/centos/roboshop_shellscript/cart.service /etc/systemd/system &>> $LOGFILE
+cp /home/centos/roboshop_shellscript/payment.service /etc/systemd/system &>> $LOGFILE
 VALIDATE $? "File copied successfully"
 
 systemctl daemon-reload &>> $LOGFILE
 VALIDATE $? "daemon-reload"
 
-systemctl enable cart   &>> $LOGFILE
-VALIDATE $? "cart enabled"
+systemctl enable payment  &>> $LOGFILE
+VALIDATE $? "dispatch enabled"
 
-systemctl start cart  &>> $LOGFILE
-VALIDATE $? "cart started"
+systemctl start payment &>> $LOGFILE
+VALIDATE $? "dispatch started"
+
+
+
