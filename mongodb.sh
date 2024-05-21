@@ -5,7 +5,7 @@ G="\e[32m"
 N="\e[0m"
 Y="\e[33m"
 TIMESTAMP=$(date +%F-%H-%M-%S)
-chmod -R /var/log
+chmod -R  /var
 LOGFILE=/var/log/$0_$TIMESTAMP.log #Generating the log file
 echo "script execution started at : $TIMESTAMP " &>>$LOGFILE
 VALIDATE(){
