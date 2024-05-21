@@ -40,7 +40,7 @@ else
     echo -e "redis already installed ...$Y SKIPPING $N"
 fi
 
-sed -i 's/127.0.0.1/0.0.0.0/g'  /etc/redis.conf &>> $LOGFILE
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/redis.conf &>> $LOGFILE
 VALIDATE $? "Servcer access enabling is"
 
 systemctl enable redis &>> $LOGFILE
