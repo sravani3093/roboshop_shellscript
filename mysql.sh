@@ -29,7 +29,7 @@ dnf module disable mysql -y &>> $LOGFILE
 VALIDATE $? "MySQL Module Disabled"
 
 cp /home/centos/roboshop_shellscript/mysql.repo /etc/yum.repos.d
-VALIDATE $? "mySql repo copied "
+VALIDATE $? "mySql repo copied"
 
 ############
 #rpm -qa | grep -i mysql-community-server
