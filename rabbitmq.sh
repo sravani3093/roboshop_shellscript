@@ -48,7 +48,9 @@ else
     echo "usr exist"
 fi
 
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOGFILE
-VALIDATE $? "permissions changed"
+rabbitmqctl add_user roboshop roboshop123 &>> $LOGFILE
+VALIDATE $? "creating user"
 
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOGFILE
+VALIDATE $? "setting permission"
 
