@@ -60,14 +60,14 @@ VALIDATE $? "File Unzip"
 npm install &>> $LOGFILE
 VALIDATE $? "Dependecies Installed"
 
-cp cart.service /etc/systemd/system &>> $LOGFILE
+cp /home/centos/roboshop_shellscript/cart.service /etc/systemd/system &>> $LOGFILE
 VALIDATE $? "File copied successfully"
 
 systemctl daemon-reload &>> $LOGFILE
 VALIDATE $? "daemon-reload"
 
-systemctl enable user  &>> $LOGFILE
-VALIDATE $? "user enabled"
+systemctl enable cart   &>> $LOGFILE
+VALIDATE $? "cart enabled"
 
-systemctl start user  &>> $LOGFILE
-VALIDATE $? "user started"
+systemctl start cart  &>> $LOGFILE
+VALIDATE $? "cart started"
