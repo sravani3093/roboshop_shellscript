@@ -52,9 +52,6 @@ VALIDATE $? "Changed the Directoy to  /app"
 unzip  -o /tmp/catalogue.zip &>> $LOGFILE
 VALIDATE $? "File Unzip"
 
-cd /app &>> $LOGFILE
-VALIDATE $? "Changed the Directoy to  /app"
-
 npm install &>> $LOGFILE
 VALIDATE $? "Dependecies Installed"
 
