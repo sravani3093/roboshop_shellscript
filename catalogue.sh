@@ -32,10 +32,14 @@ VALIDATE $? "module disable nodejs"
 
 dnf module enable nodejs:18 -y &>> $LOGFILE
 VALIDATE $? "module enable nodejs:18"
-
-useradd roboshop &>> $LOGFILE
-VALIDATE $?  "USER ADDED"
-
+id roboshop
+if [ $? -ne 0 ]
+then 
+    useradd roboshop &>> $LOGFILE
+    VALIDATE $?  "USER ADDED"
+else 
+    echo "USER roboshop already Exist"
+fi
 mkdir  -p /app &>> $LOGFILE
 VALIDATE $?  "app Directory"
 
@@ -45,7 +49,7 @@ VALIDATE $? "Catalogue File Downloaded"
 cd /app &>> $LOGFILE
 VALIDATE $? "Changed the Directoy to  /app"
 
-unzip /tmp/catalogue.zip &>> $LOGFILE
+unzip  -o /tmp/catalogue.zip &>> $LOGFILE
 VALIDATE $? "File Unzip"
 
 cd /app &>> $LOGFILE
