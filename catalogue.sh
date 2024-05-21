@@ -89,7 +89,7 @@ else
     echo -e " MONGODB IS ALREADY INSTALLED ... $Y SKIPPING $N"
 fi
 
-mongo --host mongodb.mihir.cloud</app/schema/catalogue.js &>> $LOGFILE
+mongo --host $MONGODB_HOST </app/schema/catalogue.js &>> $LOGFILE
 VALIDATE $? "catalogue loaded"
 
 
