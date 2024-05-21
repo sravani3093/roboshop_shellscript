@@ -50,7 +50,7 @@ unzip  -o /tmp/payment.zip &>> $LOGFILE
 VALIDATE $? "File Unzip"
 
 pip3.6 install -r requirements.txt
-VALIDATE $? " pip Dependecies Installed"
+VALIDATE $? "pip Dependecies Installed"
 
 cp /home/centos/roboshop_shellscript/payment.service /etc/systemd/system &>> $LOGFILE
 VALIDATE $? "File copied successfully"
@@ -59,10 +59,10 @@ systemctl daemon-reload &>> $LOGFILE
 VALIDATE $? "daemon-reload"
 
 systemctl enable payment  &>> $LOGFILE
-VALIDATE $? "dispatch enabled"
+VALIDATE $? "payment enabled"
 
 systemctl start payment &>> $LOGFILE
-VALIDATE $? "dispatch started"
+VALIDATE $? "payment started"
 
 
 
