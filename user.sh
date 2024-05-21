@@ -66,11 +66,11 @@ VALIDATE $? "File copied successfully"
 systemctl daemon-reload &>> $LOGFILE
 VALIDATE $? "daemon-reload"
 
-systemctl enable cart  &>> $LOGFILE
-VALIDATE $? "cart enabled"
+systemctl enable user  &>> $LOGFILE
+VALIDATE $? "user enabled"
 
-systemctl start cart &>> $LOGFILE
-VALIDATE $? "cart started"
+systemctl start user &>> $LOGFILE
+VALIDATE $? "user started"
 
 cp /home/centos/roboshop_shellscript/mongo.repo /etc/yum.repos.d &>> $LOGFILE #copying the repo file
 VALIDATE $? "mongo repo copied"
