@@ -31,14 +31,9 @@ VALIDATE $? "module disable nodejs"
 dnf module enable nodejs:18 -y &>> $LOGFILE
 VALIDATE $? "module enable nodejs:18"
 
-rpm -qa | grep -i nodejs
-if [ $? -ne 0 ]
-then
-   dnf install nodejs -y &>> $LOGFILE
-   VALIDATE $? "nodejs installation"
-else 
-    echo -e  "nodejs is already installed $Y SKIPPING $N"
-fi
+
+dnf install nodejs -y &>> $LOGFILE
+VALIDATE $? "nodejs installation"
 
 id roboshop
 if [ $? -ne 0 ]
