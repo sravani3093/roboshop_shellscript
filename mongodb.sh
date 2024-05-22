@@ -7,7 +7,6 @@ Y="\e[33m"
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE=/tmp/$0_$TIMESTAMP.log #Generating the log file
 echo "script execution started at : $TIMESTAMP " &>>$LOGFILE
-exec &>$LOGFILE
 VALIDATE(){
     if [ $1 -ne 0 ]
     then 
