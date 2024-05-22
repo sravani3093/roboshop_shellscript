@@ -4,7 +4,7 @@ R="\e[31m"
 G="\e[32m"
 N="\e[0m"
 Y="\e[33m"
-MONGODB_HOST=mongodb.mihir.cloud
+#MONGODB_HOST=mongodb.mihir.cloud
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE=/tmp/$0_$TIMESTAMP.log #Generating the log file
 echo "script execution started at : $TIMESTAMP " &>>$LOGFILE
@@ -87,7 +87,7 @@ else
     echo -e " MONGODB IS ALREADY INSTALLED ... $Y SKIPPING $N"
 fi
 
-mongo --host $MONGODB_HOST </app/schema/user.js &>> $LOGFILE
+mongo --host mongodb.mihir.cloud </app/schema/user.js &>> $LOGFILE
 VALIDATE $? "Users loaded"
 
 
