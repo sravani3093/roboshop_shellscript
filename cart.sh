@@ -1,71 +1,90 @@
 #!/bin/bash
+
 ID=$(id -u)
 R="\e[31m"
 G="\e[32m"
-N="\e[0m"
 Y="\e[33m"
-#MONGODB_HOST=mongodb.mihir.cloud
+N="\e[0m"
+
+
 TIMESTAMP=$(date +%F-%H-%M-%S)
-LOGFILE=/tmp/$0_$TIMESTAMP.log #Generating the log file
-echo "script execution started at : $TIMESTAMP " &>>$LOGFILE
+LOGFILE="/tmp/$0-$TIMESTAMP.log"
+
+echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
+
 VALIDATE(){
     if [ $1 -ne 0 ]
-    then 
-        echo -e "$2 is $R FAILED $N"
-        
+    then
+        echo -e "$2 ... $R FAILED $N"
+        exit 1
     else
-        echo  -e "$2 is $G SUCCESSFULL $N"
+        echo -e "$2 ... $G SUCCESS $N"
     fi
 }
 
-if [ $ID -ne 0 ] #checking the root user
+if [ $ID -ne 0 ]
 then
-    echo -e " $R you are not a root,please run as root user $N"
-    exit 1
+    echo -e "$R ERROR:: Please run this script with root access $N"
+    exit 1 # you can give other than 0
 else
-    echo -e " $G proceed to runthe script $N"
-fi
+    echo "You are root user"
+fi # fi means reverse of if, indicating condition end
+
 dnf module disable nodejs -y &>> $LOGFILE
-VALIDATE $? "module disable nodejs"
 
-dnf module enable nodejs:18 -y &>> $LOGFILE
-VALIDATE $? "module enable nodejs:18"
+VALIDATE $? "Disabling current NodeJS"
 
+dnf module enable nodejs:18 -y  &>> $LOGFILE
 
-dnf install nodejs -y &>> $LOGFILE
-VALIDATE $? "nodejs installation"
+VALIDATE $? "Enabling NodeJS:18"
 
-id roboshop
+dnf install nodejs -y  &>> $LOGFILE
+
+VALIDATE $? "Installing NodeJS:18"
+
+id roboshop #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
-then 
-    useradd roboshop &>> $LOGFILE
-    VALIDATE $?  "USER ADDED"
-else 
-    echo "USER roboshop already Exist"
+then
+    useradd roboshop
+    VALIDATE $? "roboshop user creation"
+else
+    echo -e "roboshop user already exist $Y SKIPPING $N"
 fi
-mkdir -p /app &>> $LOGFILE
-VALIDATE $?  "app Directory"
 
-curl -L -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip &>> $LOGFILE
-VALIDATE $? "cart File Downloaded"
+mkdir -p /app
 
-cd /app &>> $LOGFILE
-VALIDATE $? "Changed the Directoy to  /app"
+VALIDATE $? "creating app directory"
 
-unzip -o /tmp/cart.zip &>> $LOGFILE
-VALIDATE $? "File Unzip"
+curl -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip  &>> $LOGFILE
 
-npm install &>> $LOGFILE
-VALIDATE $? "Dependecies Installed"
+VALIDATE $? "Downloading cart application"
 
-cp /home/centos/roboshop_shellscript/cart.service /etc/systemd/system &>> $LOGFILE
-VALIDATE $? "File copied successfully"
+cd /app 
+
+unzip -o /tmp/cart.zip  &>> $LOGFILE
+
+VALIDATE $? "unzipping cart"
+
+npm install  &>> $LOGFILE
+
+VALIDATE $? "Installing dependencies"
+
+# use absolute, because cart.service exists there
+cp /home/centos/roboshop-shell/cart.service /etc/systemd/system/cart.service &>> $LOGFILE
+
+VALIDATE $? "Copying cart service file"
 
 systemctl daemon-reload &>> $LOGFILE
-VALIDATE $? "daemon-reload"
 
-systemctl enable cart   &>> $LOGFILE
-VALIDATE $? "cart enabled"
+VALIDATE $? "cart daemon reload"
 
-systemctl start cart  &>> $LOGFILE
-VALIDATE $? "cart started"
+systemctl enable cart &>> $LOGFILE
+
+VALIDATE $? "Enable cart"
+
+systemctl start cart &>> $LOGFILE
+
+VALIDATE $? "Starting cart"
+
+
+
