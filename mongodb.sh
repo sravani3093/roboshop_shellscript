@@ -26,7 +26,7 @@ else
     echo -e " $G proceed to runthe script $N"
 fi
 
-cp /home/centos/roboshop_shellscript/mongo.repo /etc/yum.repos.d/ &>>$LOGFILE #copying the repo file
+cp /home/centos/roboshop_shellscript/mongo.repo /etc/yum.repos.d &>>$LOGFILE #copying the repo file
 VALIDATE $? "Repo file copied"
 
 rpm -qa | grep -i mongodb-org &>>$LOGFILE
@@ -37,6 +37,7 @@ then
 else
     echo -e "MONGODB is ALREADY INSTALLED $Y ..SKIPPING.. $N"
 fi
+
 systemctl enable mongod &>>$LOGFILE #enabling mongod
 VALIDATE $? "mongod enabled"
 
