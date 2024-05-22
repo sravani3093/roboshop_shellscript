@@ -7,6 +7,7 @@ Y="\e[33m"
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE=/tmp/$0_$TIMESTAMP.log #Generating the log file
 echo "script execution started at : $TIMESTAMP " &>>$LOGFILE
+exec &>$LOGFILE
 VALIDATE(){
     if [ $1 -ne 0 ]
     then 
@@ -25,7 +26,7 @@ else
     echo -e " $G proceed to runthe script $N"
 fi
 
-cp /home/centos/roboshop_shellscript/mongo.repo /etc/yum.repos.d &>>$LOGFILE #copying the repo file
+cp /home/centos/roboshop_shellscript/mongo.repo /etc/yum.repos.d/ &>>$LOGFILE #copying the repo file
 VALIDATE $? "Repo file copied"
 
 rpm -qa | grep -i mongodb-org &>>$LOGFILE
